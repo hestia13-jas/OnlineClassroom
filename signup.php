@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>EduVenture | Sign Up</title> 
+  
+  <style>
+    * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Open Sans', sans-serif;
+}
+
+body, html {
+    height: 100%;
+    width: 100%;
+    background: #F4F8D3; /* Pale greenish yellow background */
+    overflow: hidden;
+}
+
+.split-screen {
+    display: flex;
+    height: 100vh;
+    background: #F4F8D3; 
+}
+
+.left {
+    flex: 1;
+    background-color: #ffffff;
+    padding: 4rem 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+    border-right: 2px solid #A6D6D6;
+    transition: transform 0.3s ease-in-out;
+}
+
+.left:hover {
+    transform: scale(1.02);
+}
+
+.left header {
+    position: absolute;
+    top: 20px;
+    left: 30px;
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #8E7DBE; /* Soft lavender */
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    z-index: 10;
+}
+
+.signup-form {
+    max-width: 400px;
+    margin: 0 auto;
+    z-index: 5;
+}
+
+.signup-form h2 {
+    color: #8E7DBE; /* Soft lavender */
+    margin-bottom: 2rem;
+    font-size: 2rem;
+    font-weight: 700;
+    text-transform: capitalize;
+    text-align: center;
+}
+
+.signup-form form input {
+    width: 100%;
+    padding: 1rem;
+    margin: 1rem 0;
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    outline: none;
+    background-color: #F9F9F9;
+    font-size: 1.1rem;
+    transition: border-color 0.3s;
+}
+
+.signup-form form input:focus {
+    border-color: #A6D6D6; /* Soft cyan */
+}
+
+.signup-form form button {
+    width: 100%;
+    padding: 1rem;
+    background: linear-gradient(to right, #A6D6D6, #8E7DBE);
+    color: white;
+    border: none;
+    border-radius: 30px;
+    margin-top: 1rem;
+    cursor: pointer;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s, background 0.3s;
+}
+
+.signup-form form button:hover {
+    background: #8E7DBE;
+    transform: translateY(-3px);
+}
+
+.signup-form p {
+    margin-top: 1rem;
+    font-size: 1rem;
+    text-align: center;
+}
+
+.signup-form a {
+    color: #8E7DBE;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.signup-form a:hover {
+    color: #A6D6D6;
+}
+
+.right {
+    flex: 1;
+    background: linear-gradient(135deg, #A6D6D6, #8E7DBE);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem;
+    box-shadow: -2px 0 15px rgba(0, 0, 0, 0.08);
+    position: relative;
+}
+
+.welcome-message {
+    text-align: center;
+    color: #ffffff;
+    z-index: 10;
+    position: relative;
+}
+
+.welcome-message h2 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    animation: fadeIn 2s ease-in-out;
+}
+
+.welcome-message p {
+    font-size: 1.2rem;
+    color: #ffffff;
+    animation: fadeIn 2s ease-in-out 0.5s;
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .split-screen {
+        flex-direction: column;
+        height: auto;
+    }
+
+    .left, .right {
+        flex: 1;
+        width: 100%;
+    }
+
+    .signup-form h2 {
+        font-size: 1.6rem;
+    }
+}
+
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="split-screen">
+    <div class="left">
+      <header>EduVenture</header>
+      <div class="signup-form">
+        <h2>Create Account</h2>
+        <form action="signup.php" method="POST">
+          <input type="text" name="name" placeholder="Full Name" required />
+          <input type="email" name="email" placeholder="Email" required />
+          <input type="password" name="password" placeholder="Password" required />
+          <button type="submit">Sign Up</button>
+          <p>Already have an account? <a href="login.php">Log In</a></p>
+        </form>
+      </div>
+    </div>
+    <div class="right">
+      <div class="welcome-message">
+        <h2>Welcome to EduVenture!</h2>
+        <p>Your adventure in learning begins here!</p>
+      </div>
+    </div>
+  </div>
+
+  <?php
+  if ($_SERVER["REQUEST_METHOD"] == "POST") {
+      include 'db_connect.php';
+
+      $name = trim($_POST["name"]);
+      $email = trim($_POST["email"]);
+      $password = password_hash($_POST["password"], PASSWORD_DEFAULT);
+
+      // Check if email exists
+      $check = $conn->prepare("SELECT id FROM users WHERE email = ?");
+      $check->bind_param("s", $email);
+      $check->execute();
+      $check->store_result();
+
+      if ($check->num_rows > 0) {
+          echo "<script>alert('Email already exists!'); window.location.href='signup.php';</script>";
+      } else {
+          $stmt = $conn->prepare("INSERT INTO users (name, email, password) VALUES (?, ?, ?)");
+          $stmt->bind_param("sss", $name, $email, $password);
+
+          if ($stmt->execute()) {
+              echo "<script>alert('Account created successfully! You can now log in.'); window.location.href='login.php';</script>";
+          } else {
+              echo "<script>alert('Something went wrong. Please try again.');</script>";
+          }
+          $stmt->close();
+      }
+      $check->close();
+      $conn->close();
+  }
+  ?>
+</body>
+</html>

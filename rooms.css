@@ -1,0 +1,62 @@
+/* Apply a soft clean background */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Open Sans', sans-serif;
+    background-color: #F4F8D3; /* Light green background */
+    color: #333;
+    min-height: 100vh;
+}
+
+/* Header with violet background */
+header {
+    background-color: #8E7DBE;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+    border-bottom: 5px solid #A6D6D6;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 2.5rem;
+}
+
+/* Main content */
+main {
+    padding: 30px;
+    background: #FFFFFF;
+    margin: 40px auto;
+    max-width: 700px;
+    border-radius: 15px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    background-color: #F7CFD8; /* Soft pink */
+}
+
+/* Paragraph styling */
+main p {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+}
+
+/* Button or link back */
+a {
+    display: inline-block;
+    padding: 12px 24px;
+    background: linear-gradient(135deg, #A6D6D6, #8E7DBE);
+    color: #fff;
+    text-decoration: none;
+    border-radius: 30px;
+    font-size: 1rem;
+    transition: background 0.3s, transform 0.3s;
+}
+
+a:hover {
+    background: linear-gradient(135deg, #8E7DBE, #A6D6D6);
+    transform: translateY(-3px);
+}
+
+/* Add a small bounce to button */
+a:active {
+    transform: translateY(0);
+}
